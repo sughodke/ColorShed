@@ -267,6 +267,19 @@
 		    payne.css('backgroundColor', col);
                     break;
 
+		case 'pinchin':
+		case 'pinchout':
+		    var payne = getpane();
+		    var bg = payne.css('backgroundColor');
+		    
+		    if (ev.type == 'pinchin')
+		      var col = chroma.color(bg).desaturate(1);
+		    else
+		      var col = chroma.color(bg).saturate(1);
+
+		    payne.css('backgroundColor', col);
+                    break;
+
 		case 'doubletap':
 		    var payne = getpane();
 		    var col = chroma.brewer.Accent[Math.floor(Math.random() * 8)];
@@ -300,7 +313,7 @@
         }
 
         element.hammer({ drag_lock_to_axis: true })
-            .on("release dragleft dragright dragup dragdown doubletap swipeleft swiperight", handleHammer);
+            .on("release dragleft dragright dragup dragdown doubletap swipeleft swiperight pinchin pinchout", handleHammer);
     }
 
 
