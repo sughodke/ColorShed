@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hammer.js</title>
+    <title>Hammer.js + Chroma.js</title>
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     <style>
@@ -96,7 +96,7 @@
             <li class="pane1"><h2>Swipe...</h2></li>
             <li class="pane2"><h2>...or drag up...</h2></li>
             <li class="pane3"><h2>...or swipe...</h2></li>
-            <li class="pane4"><h2>..or drag...</h2></li>
+            <li class="pane4"><h2>..or double tap...</h2></li>
             <li class="pane5"><h2>Dit is het einde!</h2></li>
         </ul>
     </div>
@@ -229,7 +229,10 @@
 
 
 
+	function getpane() { return $('.pane' + (1+current_pane)); }
+
         function handleHammer(ev) {
+
             //console.log(ev);
             // disable browser scrolling
             ev.gesture.preventDefault();
@@ -251,23 +254,23 @@
                     break;
 
 		case 'dragup':
-		    //if (ev.gesture.distance/pane_height < .10) return;
-		    var payne = $('.pane' + (1+current_pane));
-		    var bg = payne.css('backgroundColor');
-		    var brighten = chroma.color(bg).brighten(1);
-
-		    //console.log(brighten);
-		    payne.css('backgroundColor', brighten);
-                    break;
-
 		case 'dragdown':
 		    //if (ev.gesture.distance/pane_height < .10) return;
-		    var payne = $('.pane' + (1+current_pane));
+		    var payne = getpane();
 		    var bg = payne.css('backgroundColor');
-		    var darken = chroma.color(bg).darken(1);
+		    
+		    if (ev.type == 'dragdown')
+		      var col = chroma.color(bg).darken(1);
+		    else
+		      var col = chroma.color(bg).brighten(1);
 
-		    //console.log(darken);
-		    payne.css('backgroundColor', darken);
+		    payne.css('backgroundColor', col);
+                    break;
+
+		case 'doubletap':
+		    var payne = getpane();
+		    var col = chroma.brewer.Accent[Math.floor(Math.random() * 8)];
+		    payne.css('backgroundColor', col);
                     break;
 
                 case 'swipeleft':
@@ -297,7 +300,7 @@
         }
 
         element.hammer({ drag_lock_to_axis: true })
-            .on("release dragleft dragright dragup dragdown swipeleft swiperight", handleHammer);
+            .on("release dragleft dragright dragup dragdown doubletap swipeleft swiperight", handleHammer);
     }
 
 
