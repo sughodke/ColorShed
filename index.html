@@ -95,7 +95,7 @@
         <ul>
             <li class="pane1"><h2>Swipe...</h2></li>
             <li class="pane2"><h2>...or drag up...</h2></li>
-            <li class="pane3"><h2>...or swipe...</h2></li>
+            <li class="pane3"><h2>...or pinch...</h2></li>
             <li class="pane4"><h2>..or double tap...</h2></li>
             <li class="pane5"><h2>Dit is het einde!</h2></li>
         </ul>
@@ -273,9 +273,9 @@
 		    var bg = payne.css('backgroundColor');
 		    
 		    if (ev.type == 'pinchin')
-		      var col = chroma.color(bg).desaturate(1);
-		    else
 		      var col = chroma.color(bg).saturate(1);
+		    else
+		      var col = chroma.color(bg).desaturate(1);
 
 		    payne.css('backgroundColor', col);
                     break;
